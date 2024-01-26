@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
-import { DataService } from './app.service';
+import { DataService} from './app.service';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
   selector: 'app-root',
@@ -21,9 +22,12 @@ export class AppComponent implements OnInit{
   // private apiUrl = 'http://localhost/chinczyk/server/server.php'; // Zmień na rzeczywisty adres API
 
   fetchData() {
-    this.dataService.fetchData()
+    this.dataService.fetchData(Cookie.get('sid') ? Cookie.get('sid') : '')
       .then((data) => {
         this.data = data;
+        Cookie.set("sid",this.data.id,0.5)
+
+        console.log(Cookie.get('sid'),Cookie.get("PHPSESSID"));
       })
       .catch((error) => {
         this.error = error.message || 'An error occurred';
