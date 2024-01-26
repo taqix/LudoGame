@@ -1,10 +1,9 @@
 <?php
-    use MongoDB\Client;
-    use MongoDB\Driver\ServerApi;
-    // $client = new MongoDB\Client("mongodb://mo39083_chinczyk:Taqilive56@136.243.156.104:27017");
-    // $client->selectDatabase('chinczyk')->command(['ping' => 1]);
-    // echo "Pinged your deployment. You successfully connected to MongoDB!\n";
-    // $array = array(0=>array());
+    require 'vendor/autoload.php'; 
+    $client = new MongoDB\Client("mongodb://mo39083_chinczyk:Taqilive56@136.243.156.104:27017/?authSource=mo39083_chinczyk&readPreference=primary&ssl=false&directConnection=true");
+    $client->selectDatabase('chinczyk')->command(['ping' => 1]);
+    echo "Pinged your deployment. You successfully connected to MongoDB!\n";
+    $array = array(0=>array());
     function addPlayerToGame($id,$games){
       foreach($games as $key => $idPlayer){
         if(count($idPlayer) == 4){
