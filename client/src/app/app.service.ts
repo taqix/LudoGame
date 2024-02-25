@@ -4,24 +4,27 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class DataService {
-  private apiUrl = 'http://localhost/LudoGame/server/server.php'; // Zmień na rzeczywisty adres API
+  private apiUrl = 'http://ludoserver.ct8.pl/'; // Zmień na rzeczywisty adres API
 
-  fetchData(sid?: string): Promise<any> {
-    return fetch(sid ? `${this.apiUrl}?sid=${sid}` : this.apiUrl)
-      .then(response => {
+  fetchData(nick: string, sid?: string): Promise<any> {
+    return fetch(
+      sid
+        ? `${this.apiUrl}?sid=${sid}&nick=${nick}`
+        : `${this.apiUrl}?nick=${nick}`
+    )
+      .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
         return response.json();
       })
-      .catch(error => {
+      .catch((error) => {
         console.error('Error fetching data:', error);
         throw error;
       });
   }
 }
 export class CookiesTESTService {
-
   isConsented = false;
 
   constructor() {}
@@ -31,7 +34,7 @@ export class CookiesTESTService {
    * @param name
    */
   public deleteCookie(name: string) {
-      this.setCookie(name, '', -1);
+    this.setCookie(name, '', -1);
   }
 
   /**
@@ -40,18 +43,18 @@ export class CookiesTESTService {
    * @returns {string}
    */
   public getCookie(name: string) {
-      const ca: Array<string> = decodeURIComponent(document.cookie).split(';');
-      const caLen: number = ca.length;
-      const cookieName = `${name}=`;
-      let c: string;
+    const ca: Array<string> = decodeURIComponent(document.cookie).split(';');
+    const caLen: number = ca.length;
+    const cookieName = `${name}=`;
+    let c: string;
 
-      for (let i  = 0; i < caLen; i += 1) {
-          c = ca[i].replace(/^\s+/g, '');
-          if (c.indexOf(cookieName) === 0) {
-              return c.substring(cookieName.length, c.length);
-          }
+    for (let i = 0; i < caLen; i += 1) {
+      c = ca[i].replace(/^\s+/g, '');
+      if (c.indexOf(cookieName) === 0) {
+        return c.substring(cookieName.length, c.length);
       }
-      return '';
+    }
+    return '';
   }
 
   /**
@@ -61,12 +64,17 @@ export class CookiesTESTService {
    * @param {number} expireMin
    * @param {string} path
    */
-  public setCookie(name: string, value: string, expireMin: number, path: string = '') {
-      const d: Date = new Date();
-      d.setTime(d.getTime() + expireMin * 60 * 1000);
-      const expires = `expires=${d.toUTCString()}`;
-      const cpath = path ? `; path=${path}` : '';
-      document.cookie = `${name}=${value}; ${expires}${cpath}; SameSite=Lax`;
+  public setCookie(
+    name: string,
+    value: string,
+    expireMin: number,
+    path: string = ''
+  ) {
+    const d: Date = new Date();
+    d.setTime(d.getTime() + expireMin * 60 * 1000);
+    const expires = `expires=${d.toUTCString()}`;
+    const cpath = path ? `; path=${path}` : '';
+    document.cookie = `${name}=${value}; ${expires}${cpath}; SameSite=Lax`;
   }
 
   /**
@@ -77,15 +85,19 @@ export class CookiesTESTService {
    * @param {string} EXPIRE_DAYS
    * @returns {boolean}
    */
-  public consent(isConsent: boolean, e: any, COOKIE: string, EXPIRE_MIN: number) {
-      if (!isConsent) {
-          return this.isConsented;
-      } else if (isConsent) {
-          this.setCookie(COOKIE, '1', EXPIRE_MIN);
-          this.isConsented = true;
-          e.preventDefault();
-      }
-      return;
+  public consent(
+    isConsent: boolean,
+    e: any,
+    COOKIE: string,
+    EXPIRE_MIN: number
+  ) {
+    if (!isConsent) {
+      return this.isConsented;
+    } else if (isConsent) {
+      this.setCookie(COOKIE, '1', EXPIRE_MIN);
+      this.isConsented = true;
+      e.preventDefault();
+    }
+    return;
   }
-
 }

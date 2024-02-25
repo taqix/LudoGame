@@ -1,10 +1,8 @@
 <main>
-  <div *ngIf="data">
-    <h1>Data from the server:</h1>
-    <pre>{{ data | json }}</pre>
+  <div>
+    <label for="nick"> nick </label>
+    <input id="nick" type="text" (input)="setNick($event)" />
+    <button id="start" (click)="startGame()">Start</button>
   </div>
-  <div *ngIf="error">
-    <h1>Error:</h1>
-    <p>{{ error }}</p>
-  </div>
+  {{ nick }}
 </main>
