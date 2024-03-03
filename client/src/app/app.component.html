@@ -1,8 +1,11 @@
-<main>
+<ng-template [ngIf]="showBoard" [ngIfElse]="elseBlock">
+  <div><app-ludo-board /></div>
+</ng-template>
+
+<ng-template #elseBlock>
   <div>
     <label for="nick"> nick </label>
     <input id="nick" type="text" (input)="setNick($event)" />
     <button id="start" (click)="startGame()">Start</button>
   </div>
-  {{ nick }}
-</main>
+</ng-template>

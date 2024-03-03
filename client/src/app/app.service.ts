@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -5,23 +6,10 @@ import { Injectable } from '@angular/core';
 })
 export class DataService {
   private apiUrl = 'http://ludoserver.ct8.pl/'; // Zmień na rzeczywisty adres API
-
-  fetchData(nick: string, sid?: string): Promise<any> {
-    return fetch(
-      sid
-        ? `${this.apiUrl}?sid=${sid}&nick=${nick}`
-        : `${this.apiUrl}?nick=${nick}`
-    )
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .catch((error) => {
-        console.error('Error fetching data:', error);
-        throw error;
-      });
+  constructor(private http: HttpClient) {}
+  fetchData(nick: string, sid?: string) {
+    const data = sid ? { nick, sid } : { nick };
+    return this.http.post(this.apiUrl, JSON.stringify(data));
   }
 }
 export class CookiesTESTService {
