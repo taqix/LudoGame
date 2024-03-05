@@ -1,1 +1,10 @@
-<p>tile works!</p>
+<div class="center">
+  <div [ngClass]="cell">
+    <div *ngIf="index === 60">
+      <img src="assets/dice-1.png" alt="test" class="dice" />
+    </div>
+    <div *ngIf="isSpawn" style="background-color: transparent">
+      <app-pawn [color]="color"></app-pawn>
+    </div>
+  </div>
+</div>

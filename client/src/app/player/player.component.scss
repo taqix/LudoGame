@@ -1,7 +1,8 @@
-.playerView{
+
+.player{
     width: 100%;
     display: flex;
     justify-content: center;
-    gap: 50px;
-    position: relative;
+    align-items:center;
+    padding: 10px;
 }

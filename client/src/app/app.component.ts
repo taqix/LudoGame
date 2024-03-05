@@ -6,24 +6,49 @@ import { RouterOutlet } from '@angular/router';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { DataService } from './app.service';
 import { LudoBoardComponent } from './ludo-board/ludo-board.component';
+import { gameData } from './types';
 
+import { PlayerComponent } from './player/player.component';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, LudoBoardComponent, HttpClientModule],
+  imports: [
+    CommonModule,
+    RouterOutlet,
+    LudoBoardComponent,
+    HttpClientModule,
+    PlayerComponent,
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class AppComponent {
-  // ngOnInit(): void {
-  //   this.fetchData();
-  // }
+export class AppComponent implements OnInit {
+  async ngOnInit() {
+    this.dataService
+      .checkIfSessionExists(Cookie.get('sid') ? Cookie.get('sid') : '')
+      .subscribe((response: any) => {
+        this.gameStatus = response;
+        if (this.gameStatus.actual) {
+          this.data = response.game.game;
+
+          this.nick = this.gameStatus.nick;
+          Cookie.set('nick', this.nick, 0.06);
+          Cookie.set('sid', this.gameStatus.id, 0.06);
+          Cookie.set('color', this.gameStatus.color, 0.06);
+          this.showBoard = true;
+          this.pollData();
+        } else {
+          this.showBoard = false;
+        }
+      });
+  }
   constructor(
     private dataService: DataService,
     private formBuilder: FormBuilder
   ) {}
+  gameStatus: any;
   nick: string = '';
-  data: any;
+  data!: gameData;
   showBoard: boolean = false;
   error: string = '';
   title = 'client';
@@ -33,11 +58,25 @@ export class AppComponent {
   fetchData() {
     this.dataService
       .fetchData(this.nick, Cookie.get('sid') ? Cookie.get('sid') : '')
-      .subscribe((response) => {
-        this.data = response;
-        Cookie.set('sid', this.data.id);
+      .subscribe((response: any) => {
+        this.gameStatus = response;
+        this.data = response.game.game;
+        Cookie.set('nick', this.nick, 0.06);
+        Cookie.set('sid', this.gameStatus.id, 0.06);
+        Cookie.set('color', this.gameStatus.color, 0.06);
         this.showBoard = true;
+        this.pollData();
       });
+  }
+  async pollData() {
+    setInterval(() => {
+      this.dataService
+        .pollData(Cookie.get('sid'))
+        .subscribe((response: any) => {
+          this.data = response.game.game;
+          console.log(this.data);
+        });
+    }, 10000);
   }
   setNick(event: Event) {
     this.nick = (event.target as HTMLInputElement).value;

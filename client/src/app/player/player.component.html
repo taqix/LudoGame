@@ -1,0 +1,6 @@
+<div class="player" [ngStyle]="{ 'background-color': player.color }">
+  <ng-template [ngIf]="player.nick" [ngIfElse]="elseBlock">
+    {{ player.nick }}
+  </ng-template>
+  <ng-template #elseBlock> ? </ng-template>
+</div>

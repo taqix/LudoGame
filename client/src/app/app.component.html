@@ -1,5 +1,13 @@
 <ng-template [ngIf]="showBoard" [ngIfElse]="elseBlock">
-  <div><app-ludo-board /></div>
+  <div class="playerView">
+    <div *ngFor="let player of data | keyvalue" style="width: 25%">
+      <app-player [player]="player.value" />
+    </div>
+  </div>
+
+  <div style="display: flex; justify-content: center; width: 100%">
+    <app-ludo-board />
+  </div>
 </ng-template>
 
 <ng-template #elseBlock>

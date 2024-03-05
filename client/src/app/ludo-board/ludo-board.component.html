@@ -1,3 +1,9 @@
 <div class="ludo-board">
-  <div class="cell" *ngFor="let cell of boardCells; let i = index"></div>
+  <Tile
+    *ngFor="let cells of boardCells; let i = index"
+    [cell]="cells.field_type"
+    [index]="cells.index"
+    [isSpawn]="cells.isSpawn"
+    [color]="cells.color"
+  ></Tile>
 </div>

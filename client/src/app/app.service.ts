@@ -11,6 +11,17 @@ export class DataService {
     const data = sid ? { nick, sid } : { nick };
     return this.http.post(this.apiUrl, JSON.stringify(data));
   }
+  checkIfSessionExists(sid: string) {
+    if (sid !== '') {
+      const data = { sid };
+      return this.http.post(this.apiUrl, JSON.stringify(data));
+    } else {
+      return this.http.post(this.apiUrl, JSON.stringify({}));
+    }
+  }
+  pollData(sid: string) {
+    return this.http.post(`${this.apiUrl}getData.php`, JSON.stringify({ sid }));
+  }
 }
 export class CookiesTESTService {
   isConsented = false;

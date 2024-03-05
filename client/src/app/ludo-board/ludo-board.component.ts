@@ -1,14 +1,21 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { TileComponent } from '../tile/tile.component';
+import { convertBoard } from '../utils';
+import { BoardI } from '../types';
 @Component({
   selector: 'app-ludo-board',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TileComponent],
   templateUrl: './ludo-board.component.html',
   styleUrl: './ludo-board.component.scss',
 })
-export class LudoBoardComponent {
-  boardCells: string[] = Array(121).fill('');
+export class LudoBoardComponent implements OnInit {
+  boardCells: BoardI[] = Array();
 
+  ngOnInit(): void {
+    this.boardCells = convertBoard();
+    console.log(this.boardCells);
+  }
   constructor() {}
 }
