@@ -1,7 +1,10 @@
 <ng-template [ngIf]="showBoard" [ngIfElse]="elseBlock">
   <div class="playerView">
     <div *ngFor="let player of data | keyvalue" style="width: 25%">
-      <app-player [player]="player.value" />
+      <app-player
+        [player]="player.value"
+        (changeStatusFromPlayer)="changeStatus($event)"
+      />
     </div>
   </div>
 

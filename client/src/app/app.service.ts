@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-
+import { StatusChangeI } from './types';
 @Injectable({
   providedIn: 'root',
 })
@@ -21,6 +21,13 @@ export class DataService {
   }
   pollData(sid: string) {
     return this.http.post(`${this.apiUrl}getData.php`, JSON.stringify({ sid }));
+  }
+  setStatus(statusObj: StatusChangeI) {
+    console.log(statusObj);
+    return this.http.post(
+      `${this.apiUrl}setStatus.php`,
+      JSON.stringify({ ...statusObj })
+    );
   }
 }
 export class CookiesTESTService {

@@ -1,4 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  ElementRef,
+  ViewChild,
+  AfterViewInit,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-pawn',
@@ -9,4 +15,7 @@ import { CommonModule } from '@angular/common';
 })
 export class PawnComponent {
   @Input() color!: string;
+  @Input() parent_index!: number;
+  @ViewChild('', { read: ElementRef })
+  myDiv!: ElementRef;
 }

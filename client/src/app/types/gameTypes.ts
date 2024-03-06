@@ -23,3 +23,7 @@ interface PawnsI {
   pawn_3: number;
   pawn_4: number;
 }
+export interface StatusChangeI {
+  sid: string;
+  status: string;
+}

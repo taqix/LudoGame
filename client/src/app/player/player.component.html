@@ -1,6 +1,21 @@
 <div class="player" [ngStyle]="{ 'background-color': player.color }">
   <ng-template [ngIf]="player.nick" [ngIfElse]="elseBlock">
     {{ player.nick }}
+    <div style="background-color: transparent">
+      <label
+        [htmlFor]="'ready_' + player.player_id"
+        style="background-color: transparent"
+        >Ready</label
+      >
+      <input
+        type="checkbox"
+        [disabled]="player.player_id !== sid"
+        (change)="changeStatus($event)"
+        [checked]="player_status === '1'"
+        name=""
+        [attr.id]="'ready_' + player.player_id"
+      />
+    </div>
   </ng-template>
   <ng-template #elseBlock> ? </ng-template>
 </div>

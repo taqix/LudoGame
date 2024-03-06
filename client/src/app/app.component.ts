@@ -6,7 +6,7 @@ import { RouterOutlet } from '@angular/router';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { DataService } from './app.service';
 import { LudoBoardComponent } from './ludo-board/ludo-board.component';
-import { gameData } from './types';
+import { gameData, StatusChangeI } from './types';
 
 import { PlayerComponent } from './player/player.component';
 @Component({
@@ -83,5 +83,12 @@ export class AppComponent implements OnInit {
   }
   startGame() {
     this.fetchData();
+  }
+  changeStatus(status: string) {
+    console.log(status);
+    const statusObj = { sid: Cookie.get('sid'), status: status };
+    this.dataService.setStatus(statusObj).subscribe((response: any) => {
+      this.data = response.game.game;
+    });
   }
 }
